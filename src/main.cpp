@@ -13,8 +13,22 @@
 
 #include "lights_control.h"
 
+// the modes can be included only once !
+#include "modes/lm_static_7color.h"
+#include "modes/lm_slow_7color.h"
+#include "modes/lm_fast_segments.h"
+
 uint32_t  g_last_hb = 0;
 uint32_t  g_hbcounter = 0;
+
+void init_modes()
+{
+  lights.AddMode(&lm_static_7color);
+  lights.AddMode(&lm_slow_7color);
+  lights.AddMode(&lm_fast_segments);
+
+  lights.SelectMode(1);  // select mode by index
+}
 
 void setup() 
 {
@@ -48,7 +62,9 @@ void setup()
 
   TRACE("\r\n");
 
-  lights.begin();
+  lights.Init(LED_COUNT);
+
+  init_modes();
 
   g_cmdline.WritePrompt();
 }
@@ -59,7 +75,7 @@ void loop()
   uint32_t t = micros();
 
   g_cmdline.Run();
-  lights.run(); 
+  lights.Run(); 
   ota_app_run();
 
   if (t - g_last_hb > 1000000 / 2)

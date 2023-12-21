@@ -8,9 +8,10 @@
 #ifndef SRC_BOARD_PINS_H_
 #define SRC_BOARD_PINS_H_
 
-#define  SCOPE_DATA_BUFFER_SIZE  (32 * 1024)
-
 #define NEOPIXEL_PIN    0
+#define LED_COUNT     100 
+
+#define MAX_MODES      16
 
 #if defined(ARDUINO_LOLIN_C3_MINI)
   #define PIN_LED        7
