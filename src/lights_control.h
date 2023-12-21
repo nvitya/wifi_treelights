@@ -14,6 +14,7 @@ public:
   uint32_t    step_micros = 1000000;
   uint32_t    last_step_time = 0;
   uint32_t    scnt = 0;
+  Adafruit_NeoPixel * leds; // = 
 
   void     begin();
   void     run();

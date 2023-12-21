@@ -14,9 +14,11 @@
 
 #if defined(ARDUINO_LOLIN_C3_MINI)
   #define PIN_LED        7
+#elif defined(ARDUINO_ESP32C3_WROOM02)
+  #define PIN_LED        9
 #elif defined(ARDUINO_ESP32C3_DEV)
-  #define PIN_LED       2 // 18
-  #define PIN_LED2      3 // 19
+  #define PIN_LED       18
+  #define PIN_LED2      19
 #elif defined(ARDUINO_LOLIN_S2_MINI)
   #define PIN_LED       15
 #elif defined(ARDUINO_ESP32S3_DEV)

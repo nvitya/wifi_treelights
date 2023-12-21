@@ -21,10 +21,12 @@ void setup()
   board_pins_init();
   traces_init();
 
-  digitalWrite(PIN_LED, 1);
+  digitalWrite(PIN_LED, 0);
   delay(500);  // this delay is for the platformio IDE, to switch the UART to console
+  digitalWrite(PIN_LED, 1);
 
   TRACE("\n\n--------------------------------\n");
+
   TRACE("Initializing file system...\r\n");
   if (SPIFFS.begin(true))  // formatOnFail = true
   {
@@ -37,27 +39,27 @@ void setup()
 
   g_config.Init(); // also loads the confiugration
 
+  board_net_init();
+  ota_app_init();
+
   g_cmdline.Init();
   g_cmdline.ShowNetAdapterInfo();
   g_cmdline.ShowNetInfo(nullptr, 0);
 
-  board_net_init();
-
   TRACE("\r\n");
 
-  g_cmdline.WritePrompt();
-
   lights.begin();
+
+  g_cmdline.WritePrompt();
 }
 
 
-void IRAM_ATTR loop() 
+void loop() 
 {
   uint32_t t = micros();
 
-  lights.run();
-
   g_cmdline.Run();
+  lights.run(); 
   ota_app_run();
 
   if (t - g_last_hb > 1000000 / 2)
@@ -70,5 +72,5 @@ void IRAM_ATTR loop()
     g_last_hb = t;
   }
 
-  taskYIELD();
+  //taskYIELD();
 }                     

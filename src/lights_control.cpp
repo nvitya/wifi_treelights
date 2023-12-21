@@ -9,7 +9,7 @@
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel leds = Adafruit_NeoPixel(LED_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+
 
 TLightsControl lights;
 
@@ -30,9 +30,10 @@ void TLightsControl::begin()
 {
   last_step_time = micros();
 
-  leds.begin();
-  leds.setBrightness(50);
-  leds.show();  
+  leds = new Adafruit_NeoPixel(LED_COUNT, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+  leds->begin();
+  leds->setBrightness(50);
+  leds->show();  
 }
 
 void TLightsControl::run()
@@ -47,7 +48,7 @@ void TLightsControl::run()
     else if (2 == mode)  run_mode_2();
     else                 run_mode_0();
 
-    leds.show();
+    leds->show();
  
     last_step_time = t;
   }
@@ -59,7 +60,7 @@ void TLightsControl::run_mode_0() // static palette
   {
     uint32_t c = palette[n % PALETTE_CNT];
     //uint32_t c = 0x0000FF;
-    leds.setPixelColor(n, c);
+    leds->setPixelColor(n, c);
   }
 }
 
@@ -68,7 +69,7 @@ void TLightsControl::run_mode_1() // slow moving palette
   for (unsigned n = 0; n < LED_COUNT; ++n)
   {
     uint32_t c = palette[(n + scnt) % PALETTE_CNT];
-    leds.setPixelColor(n, c);
+    leds->setPixelColor(n, c);
   }
 }
 
@@ -80,7 +81,7 @@ void TLightsControl::run_mode_2()  // fast moving segments
     uint32_t m = ((n - scnt) % 30);
     if (m > 2)  c = 0;
 
-    leds.setPixelColor(n, c);
+    leds->setPixelColor(n, c);
   }
 }
 

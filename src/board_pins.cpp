@@ -11,21 +11,21 @@
 #include "traces.h"
 
 #include "WiFi.h"
-//#include "udo_ip_comm.h"
-
 #include "nvconfig.h"
 
-bool          g_wifi_connected = false;
+bool g_wifi_connected = false;
 
 void wifi_event_handler(WiFiEvent_t event)
 {
   switch(event)
   {
     case SYSTEM_EVENT_STA_GOT_IP:
+      digitalWrite(PIN_LED, 0);
+      TRACE("WiFi got ip.\r\n");
       g_wifi_connected = true;
       break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
-      TRACE("WiFi lost connection\n");
+      TRACE("WiFi lost connection\r\n");
       g_wifi_connected = false;
       break;
     default:
@@ -40,13 +40,15 @@ void board_pins_init()
   pinMode(PIN_LED, OUTPUT);
 #if defined(ARDUINO_ESP32C3_DEV)
   // turn off the ugly white led
-  //pinMode(19, OUTPUT);
-  //digitalWrite(19, 0);
+  pinMode(19, OUTPUT);
+  digitalWrite(19, 0);
 #endif
 }
 
 void board_net_init()
 {
+  TRACE("WiFi init\r\n");
+
   TCfgStb * pcfg = &g_config.data;
 
   IPAddress     local_IP(pcfg->ip_address.u8);
@@ -58,21 +60,23 @@ void board_net_init()
   g_wifi_connected = false;
 
   WiFi.disconnect(true);  // delete old config
+  WiFi.mode(WIFI_STA);
   WiFi.onEvent(wifi_event_handler);  //register event handler
 
   if (strlen(pcfg->wifi_ssid) > 0)
   {
     if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS))
     {
-      TRACE("WiFi config error!\n");
+      TRACE("WiFi config error!\r\n");
     }
     else
     {
+      TRACE("WiFi begin...\r\n");
       WiFi.begin(pcfg->wifi_ssid, pcfg->wifi_password);
     }
   }
   else
   {
-    TRACE("The SSID is empty, please configure the WiFi with the net command.\n");
+    TRACE("The SSID is empty, please configure the WiFi with the net command.\r\n");
   }
 }

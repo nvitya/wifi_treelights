@@ -56,9 +56,6 @@ void ota_app_init()
     }
   );
 
-  ArduinoOTA.begin();
-
-  ota_app_initialized = true;
 }
 
 void ota_app_run()
@@ -67,7 +64,8 @@ void ota_app_run()
   {
     if (g_wifi_connected)
     {
-      ota_app_init();      
+      ArduinoOTA.begin();
+      ota_app_initialized = true;    
     }
     return;
   }
