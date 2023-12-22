@@ -1,5 +1,7 @@
 
 #include "lights_control.h"
+#include "traces.h"
+#include "SPIFFS.h"
 
 TLightsControl lights;
 
@@ -48,11 +50,15 @@ void TLightsControl::Run()
 
 void TLightsControl::SelectMode(uint8_t aindex)
 {
-  if (aindex < mode_count)
-  {
-    curmode = mode_list[aindex];
-    //curmode->Begin();
-  }
+  // warning: mode_count can not be 0 !
+  if (aindex >= mode_count)  aindex = mode_count - 1;
+
+  mode_index = aindex;
+  curmode = mode_list[aindex];
+  scnt = 0;
+  curmode->Step(0);
+  leds->show();
+  last_step_time = micros();
 }
 
 void TLightsControl::AddMode(TLightModeBase * amode) 
@@ -62,3 +68,38 @@ void TLightsControl::AddMode(TLightModeBase * amode)
   ++mode_count;
 }
 
+void TLightsControl::SaveSettings() 
+{
+  File file = SPIFFS.open("/light_mode.bin", FILE_WRITE);
+  if (!file)
+  {
+    TRACE("Error writing mode file!\r\n");
+    return;
+  }
+
+  if (!file.write((const uint8_t *)&mode_index, sizeof(mode_index)))
+  {
+    TRACE("Mode save failed!\r\n");
+  }
+
+  file.close();
+}
+
+void TLightsControl::LoadSettings() 
+{
+  File file = SPIFFS.open("/light_mode.bin", FILE_READ);
+  if (file)
+  {
+    if (!file.read((uint8_t *)&mode_index, sizeof(mode_index)))
+    {
+      TRACE("Error reading mode!\r\n");
+    }
+    file.close();
+  }
+  else
+  {
+    TRACE("Error reading mode file!\r\n");
+  }
+
+  SelectMode(mode_index);
+}

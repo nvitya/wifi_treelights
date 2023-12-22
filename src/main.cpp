@@ -6,29 +6,15 @@
 
 #include "cmdline_app.h"
 #include "ota_app.h"
+#include "http_app.h"
 #include "board_pins.h"
 #include "traces.h"
 
-//#include "wifi_secret.h"
-
 #include "lights_control.h"
-
-// the modes can be included only once !
-#include "modes/lm_static_7color.h"
-#include "modes/lm_slow_7color.h"
-#include "modes/lm_fast_segments.h"
+#include "modes/light_modes.h"
 
 uint32_t  g_last_hb = 0;
 uint32_t  g_hbcounter = 0;
-
-void init_modes()
-{
-  lights.AddMode(&lm_static_7color);
-  lights.AddMode(&lm_slow_7color);
-  lights.AddMode(&lm_fast_segments);
-
-  lights.SelectMode(1);  // select mode by index
-}
 
 void setup() 
 {
@@ -55,6 +41,7 @@ void setup()
 
   board_net_init();
   ota_app_init();
+  http_app_init();
 
   g_cmdline.Init();
   g_cmdline.ShowNetAdapterInfo();
@@ -64,7 +51,9 @@ void setup()
 
   lights.Init(LED_COUNT);
 
-  init_modes();
+  light_modes_init();
+
+  lights.LoadSettings();  // sets the mode
 
   g_cmdline.WritePrompt();
 }
@@ -76,6 +65,7 @@ void loop()
 
   g_cmdline.Run();
   lights.Run(); 
+  http_app_run();
   ota_app_run();
 
   if (t - g_last_hb > 1000000 / 2)

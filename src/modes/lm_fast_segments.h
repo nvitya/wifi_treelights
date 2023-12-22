@@ -1,5 +1,3 @@
-#ifndef LM_FAST_SEGMENTS_H_
-#define LM_FAST_SEGMENTS_H_
 
 #include "lights_control.h"
 
@@ -39,5 +37,3 @@ public:
 };
 
 TLmFastSegments  lm_fast_segments;  // this must be included only once because of this!
-
-#endif

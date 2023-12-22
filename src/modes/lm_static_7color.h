@@ -1,5 +1,3 @@
-#ifndef LM_STATIC_7COLOR_H_
-#define LM_STATIC_7COLOR_H_
 
 #include "lights_control.h"
 
@@ -36,4 +34,3 @@ public:
 
 TLmStatic7Color  lm_static_7color;  // this must be included only once because of this!
 
-#endif

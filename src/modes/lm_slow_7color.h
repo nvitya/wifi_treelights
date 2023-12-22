@@ -1,5 +1,3 @@
-#ifndef LM_SLOW_7COLOR_H_
-#define LM_SLOW_7COLOR_H_
 
 #include "lights_control.h"
 
@@ -35,5 +33,3 @@ public:
 };
 
 TLmSlow7Color  lm_slow_7color;  // this must be included only once because of this!
-
-#endif
