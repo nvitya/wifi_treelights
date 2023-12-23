@@ -8,8 +8,9 @@
 #ifndef SRC_BOARD_PINS_H_
 #define SRC_BOARD_PINS_H_
 
-#define NEOPIXEL_PIN    0
-#define LED_COUNT     100 
+#define NEOPIXEL_PIN       0
+#define LED_COUNT        100 
+#define BLANK_LED_COUNT    0 
 
 #define MAX_MODES      16
 

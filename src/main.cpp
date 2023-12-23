@@ -49,7 +49,7 @@ void setup()
 
   TRACE("\r\n");
 
-  lights.Init(LED_COUNT);
+  lights.Init(LED_COUNT, BLANK_LED_COUNT);
 
   light_modes_init();
 

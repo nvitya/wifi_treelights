@@ -5,8 +5,7 @@ class TLmSlow7Color : public TLightModeBase
 {
 public:
   static const unsigned  palette_cnt = 7;
-
-  uint32_t  palette[palette_cnt] = 
+  uint32_t               palette[palette_cnt] = 
   { 
     0xFFFFFF, 
     0x00FF00, 
@@ -14,22 +13,21 @@ public:
     0x0000FF, 
     0xFF0000, 
     0x00FFFF, 
-    0xFFE000
+    0xFFA000
   };
 
-  virtual void InitParams()
+  TLmSlow7Color(String aname)  // constructor
   {
-    name = "Slow moving 7-Color Permutation";
+    name = aname;
   }
 
-  virtual void Step(uint32_t  astep)
+  virtual void Step(uint32_t astep)
   {
-    for (unsigned n = 0; n < LED_COUNT; ++n)
+    for (unsigned n = 0; n < ledcnt; ++n)
     {
       uint32_t c = palette[(n + astep) % palette_cnt];
-      leds->setPixelColor(n, c);
+      SetPixelColor(n, c);
     }
   }
 };
 
-TLmSlow7Color  lm_slow_7color;  // this must be included only once because of this!

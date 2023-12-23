@@ -20,7 +20,7 @@ void send_main_page()
   s +="<title>Christmas Tree Lights</title>\n";
   s +="<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
   s +="body{margin-top: 10px;} h1 {color: #444444;margin: 10px auto 10px;} h3 {color: #444444;margin-bottom: 10px;}\n";
-  s +=".button {display: block;width: 300px;background-color: #3498db;border: none;color: white;padding: 13px 30px;text-decoration: none;font-size: 18px;margin: 0px auto 20px;cursor: pointer;border-radius: 8px;}\n";
+  s +=".button {display: block;width: 300px;background-color: #3498db;border: none;color: white;padding: 13px 30px;text-decoration: none;font-size: 18px;margin: 0px auto 10px;cursor: pointer;border-radius: 20px;}\n";
   s +=".button-on {background-color: #3498db;}\n";
   s +=".button-on:active {background-color: #2980b9;}\n";
   s +=".button-off {background-color: #34495e;}\n";

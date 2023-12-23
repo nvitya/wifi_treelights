@@ -1,7 +1,7 @@
 
 #include "lights_control.h"
 
-class TLmStatic7Color : public TLightModeBase
+class TLmRandomSingle : public TLightModeBase
 {
 public:
   static const unsigned  palette_cnt = 7;
@@ -15,19 +15,27 @@ public:
     0x00FFFF, 
     0xFFA000
   };
-  
-  TLmStatic7Color(String aname)  // constructor
+
+  TLmRandomSingle(String aname) // constructor
   {
     name = aname;
+    step_micros = 1000000 / 20;  
   }
 
   virtual void Step(uint32_t  astep)
   {
+    uint32_t c = palette[random(palette_cnt)];
+    uint32_t pos = random(ledcnt);
     for (unsigned n = 0; n < ledcnt; ++n)
-    {
-      uint32_t c = palette[n % palette_cnt];      
-      SetPixelColor(n, c);
+    {      
+      if (n == pos)
+      {
+        SetPixelColor(n, c);
+      }
+      else
+      {
+        SetPixelColor(n, 0);
+      }
     }
   }
 };
-

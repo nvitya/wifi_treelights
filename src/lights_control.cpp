@@ -8,24 +8,36 @@ TLightsControl lights;
 #define PALETTE_CNT  7
 
 
-void TLightModeBase::Init(uint8_t aindex, Adafruit_NeoPixel * aleds)
+void TLightModeBase::Init(uint8_t aindex, TLightsControl * actrl)
 {
   index = aindex;
-  leds = aleds;
-  ledcnt = leds->numPixels();
-  InitParams();  
+  pctrl = actrl;
+  ledcnt = pctrl->ledcnt;  
+  Setup(); // virtual function
+}
+
+void  TLightModeBase::SetPixelColor(uint16_t n, uint32_t c)
+{ 
+  pctrl->SetPixelColor(n, c); 
+}
+
+void  TLightModeBase::SetPixelColor(uint16_t n, uint8_t r, uint8_t g, uint8_t b)
+{ 
+  pctrl->SetPixelColor(n, r, g, b); 
 }
 
 //----------------------------------------------------------------------
 
-void TLightsControl::Init(int aledcnt)
+void TLightsControl::Init(uint32_t aledcnt, uint32_t ablankleds)
 {
-  ledcnt = aledcnt;
-  mode_count = 0;
+  fullledcnt = aledcnt;
+  blankledcnt = ablankleds;  
+  ledcnt = fullledcnt - blankledcnt;
 
+  mode_count = 0;
   last_step_time = micros();
 
-  leds = new Adafruit_NeoPixel(ledcnt, NEOPIXEL_PIN, NEO_GRB + NEO_KHZ800);
+  leds = new Adafruit_NeoPixel(fullledcnt, NEOPIXEL_PIN, NEO_RGB + NEO_KHZ800);
   leds->begin();
   leds->setBrightness(brightness);
   leds->show();  
@@ -64,7 +76,7 @@ void TLightsControl::SelectMode(uint8_t aindex)
 void TLightsControl::AddMode(TLightModeBase * amode) 
 {
   mode_list[mode_count] = amode;
-  amode->Init(mode_count, leds);
+  amode->Init(mode_count, this);
   ++mode_count;
 }
 

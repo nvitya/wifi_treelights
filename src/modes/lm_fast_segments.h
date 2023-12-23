@@ -5,8 +5,7 @@ class TLmFastSegments : public TLightModeBase
 {
 public:
   static const unsigned  palette_cnt = 7;
-
-  uint32_t  palette[palette_cnt] = 
+  uint32_t               palette[palette_cnt] = 
   { 
     0xFFFFFF, 
     0x00FF00, 
@@ -14,13 +13,13 @@ public:
     0x0000FF, 
     0xFF0000, 
     0x00FFFF, 
-    0xFFE000
+    0xFFA000
   };
 
-  virtual void InitParams()
+  TLmFastSegments(String aname) // constructor
   {
-    step_micros = 1000000 / 40;
-    name = "Fast moving color segments";
+    name = aname;
+    step_micros = 1000000 / 40;  // = 40 step / s
   }
 
   virtual void Step(uint32_t  astep)
@@ -31,9 +30,7 @@ public:
       uint32_t m = ((n - astep) % 30);
       if (m > 2)  c = 0;
 
-      leds->setPixelColor(n, c);
+      SetPixelColor(n, c);
     }
   }
 };
-
-TLmFastSegments  lm_fast_segments;  // this must be included only once because of this!
