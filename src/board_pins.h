@@ -10,7 +10,7 @@
 
 #define NEOPIXEL_PIN       0
 #define LED_COUNT        100 
-#define BLANK_LED_COUNT    0 
+#define BLANK_LED_COUNT   10 
 
 #define MAX_MODES      16
 

@@ -16,7 +16,7 @@ void light_modes_init()
   lights.AddMode( new TLmSlow7Color(    "Slow changing 7-color Palette" ));
   lights.AddMode( new TLmFastSegments(  "Fast moving color segments"    ));
   lights.AddMode( new TLmRandomMulti(   "Random 1x / 30 FPS", 1, 30     ));
-  lights.AddMode( new TLmRandomMulti(   "Random 3x / 60 FPS", 3, 60     ));
+  lights.AddMode( new TLmRandomMulti(   "Random 5x / 30 FPS", 5, 30     ));
   lights.AddMode( new TLmSingleColor(   "OFF",     0x000000             ));
   lights.AddMode( new TLmSingleColor(   "RED",     0xFF0000             ));
   lights.AddMode( new TLmSingleColor(   "GREEN",   0x00FF00             ));
